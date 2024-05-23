@@ -2,7 +2,9 @@
    v2.0 | 20110126
    License: none (public domain)
 */
-
+html{
+	min-height: 100vh;
+}
 html, body, div, span, applet, object, iframe,
 h1, h2, h3, h4, h5, h6, p, blockquote, pre,
 a, abbr, acronym, address, big, cite, code,
@@ -48,6 +50,7 @@ table {
 }
 /** end reset css**/
 body {
+	
 	max-width: 1140px;
 	margin:auto;
 	font-family: 'Work Sans' ;
@@ -95,7 +98,7 @@ nav li {
 	font-size: 1.2em;
 }
 
-li:hover {
+li:hover , a:hover {
 	color: #B1663C;
 }
 #introduction {
@@ -137,7 +140,7 @@ li:hover {
 	width: 100%;
 
 }
-#contact {
+#contact , #login {
 	width: 50%;
 margin: auto;
 }
@@ -145,26 +148,26 @@ margin: auto;
 	text-align: center;
 
 }
-#contact h2{
+#contact h2 , #login h2{
 	margin-bottom: 20px;
 }
-#contact form {
+#contact form , #login form{
 	text-align: left;
 	margin-top:30px;
 	display: flex;
 	flex-direction: column;
 }
 
-#contact input {
+#contact input , #login input{
 	height: 50px;
 	font-size: 1.2em;
 	border: none;
 	box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
 }
-#contact label {
+#contact label  , #login label{
 	margin: 2em 0 1em 0;
 }
-#contact textarea {
+#contact textarea , #login textarea {
 	border: none;
 	box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
 }
@@ -180,9 +183,40 @@ input[type="submit"]{
 	border-radius: 60px ;
 }
 
-footer nav ul {
+footer nav ul{
 	display: flex;
 	justify-content: flex-end;
 	margin: 2em
 }
 
+/******************************************************/
+.filter{
+	display: none;
+}
+
+.filter-containeur label{
+	display: inline-block;
+    padding: 10px 20px;
+    border-radius: 30px;
+	border:2px solid #1D6154;
+    background-color: #ffffff;
+    color: #1D6154;
+    font-size: 18px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.filter:checked + label{
+	background-color: #1D6154;
+	color: #ffffff;
+}
+
+a{
+	text-decoration: none;
+}
+
+
+.logout{
+	display: none;
+}
