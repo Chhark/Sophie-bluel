@@ -86,7 +86,7 @@ async function galeryPhoto() {
 
 function innerGalery(galery) {
     galery.forEach((élement) => {
-        let img = "<img src=\""+élement.imageUrl+"\"alt=\""+élement.title+"\">"
+        let img = "<div class=\"relativeDiv\"><img src=\""+élement.imageUrl+"\"alt=\""+élement.title+"\"><i class=\"fa-solid fa-trash-can fa-2xs\"></i></div>"
         display_img.innerHTML += img
     })}
 
