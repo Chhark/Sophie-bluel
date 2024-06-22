@@ -286,13 +286,95 @@ a{
 }
 .popup{
 	padding: 20px;
+	padding-bottom: 50px;
 	background-color: #ffffff;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
 	width: 630px;
-	height: 530px;
 	box-sizing: border-box;
+	border-radius: 10px;
+	row-gap: 20px;
+}
+
+.popup h3 {
+	font-size: 26px;
+	
+}
+
+.popup .ajout-photo{
+	width: 420px;
+	padding: 30px 0;
+	gap: 10px;
+	background-color: #E8F1F6;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+.ajout-photo i {
+	font-size: 76px;
+	color: #B9C5CC;
+}
+
+.ajout-photo p {
+	font-size: 10px;
+}
+.popup hr {
+	width: 420px;
+	color: #B3B3B3;
+}
+
+.popup button {
+	display: inline-block;
+    padding: 8px 20px;
+    border-radius: 30px;
+	border:2px solid #1D6154;
+    color: #1D6154;
+    font-size: 18px;
+    text-align: center;
+    cursor: pointer;
+	background-color: #1D6154;
+	color: #ffffff;
+}
+
+.popup .valid{
+	padding: 8px 100px;
+}
+
+.ajout-photo .photoSelect{
+	background-color: #CBD6DC;
+	border: none;
+	color: #306685;
+	font-size: 14px;
+	padding: 8px 40px;
+	border-radius: 50px;
+}
+
+.ajout-photo img {
+	width: 129px;
+}
+
+.input{
+	gap: 8px;
+	width: 420px;
+	display: flex;
+	flex-direction: column;
+	align-items: start;
+}
+
+.input input , select ,.input input:focus ,.input select:focus{
+	margin-bottom: 8px;
+	height: 51px;
+	padding: 0;
+	border: none;
+	width: 100%;
+	box-shadow: 0 4px 14px 0 #0000002e;
+	outline: none;
+}
+
+input[type="file"]{
+	display: none;
 }
 
 .fa-xmark{
@@ -323,6 +405,7 @@ a{
 .fa-trash-can{
 	width: 17px;
 	height: 17px;
+	display: flex;
 	align-items: center;
 	justify-content: center;
 	color: #ffffff;
@@ -330,4 +413,22 @@ a{
 	top: 5px;
 	right: 5px;
 	background-color: #000000;
+	border-radius: 3px;
+}
+
+.btn-disabled {
+    background-color: #A7A7A7 !important;
+    color: white;
+    cursor: not-allowed;
+}
+.btn-enabled {
+    background-color:#1D6154;
+    color: white;
+    cursor: pointer;
+}
+
+.popup #addWork{
+	display: flex;
+	flex-direction: column;
+	align-items: center;
 }
