@@ -107,14 +107,26 @@ function innerGalery(galery) {
     })
     display_img.innerHTML = Display_img
     document.querySelectorAll(".fa-trash-can").forEach(trashicon => {
-        trashicon.addEventListener("click",function() {
+        trashicon.addEventListener("click",async function() {
             let idd = this.getAttribute('data-id');
             console.log(pieces)
             idd = pieces[idd].id
             console.log(idd)
+            await DeleteWork(idd)
+            
         })
     })
 
+}
+
+function DeleteWork(workId) {
+    let DeleteResponse = fetch(`http://localhost:5678/api/works/${workId}` ,{ 
+        method: 'DELETE',
+        headers: {
+            'Authorization': `Bearer ${bearerToken}`,
+            'Content-Type': 'application/json'
+        }
+    })
 }
 
 let edition = document.querySelector(".projet-edition").addEventListener("click" , () => {
@@ -144,7 +156,7 @@ let file
 let formData = new FormData();
 image2.addEventListener("change" , (event)=>{
     file = event.target.files[0]
-
+    formData.append()///////////////////////////////////
     if(file){
         const reader = new FileReader();
 
@@ -159,7 +171,7 @@ image2.addEventListener("change" , (event)=>{
 }
 })
  
-let token = window.localStorage.getItem('token')
+/*let token = window.localStorage.getItem('token')
 token = JSON.parse(token)
 document.getElementById('imageUpload').addEventListener('change',async function(event) {
     event.preventDefault();
@@ -176,7 +188,7 @@ document.getElementById('imageUpload').addEventListener('change',async function(
     
 
 
-}) 
+}) */
 let formm = document.getElementById('addWork')
 let submitButton = document.querySelector(".valid")
 let RequiredInput = formm.querySelectorAll("input , select")
@@ -221,7 +233,7 @@ formm.addEventListener('submit', async (Event)=>{
     console.log(token)
     token = JSON.parse(token)
     console.log(token)
-    publishwork(formData , token)
+    await zpublishwork(formData , token)
     console.log("test2")
     console.log(response)
 })
