@@ -113,12 +113,24 @@ function innerGalery(galery) {
             idd = pieces[idd].id
             console.log(idd)
             await DeleteWork(idd)
+            refreshgalery()
             
         })
     })
 
 }
-
+let bearerToken = window.localStorage.getItem('token')
+bearerToken = JSON.parse(bearerToken)
+bearerToken = bearerToken.token
+console.log(bearerToken)
+async function refreshgalery(){
+    let reponse = await fetch('http://localhost:5678/api/works')
+        pieces = await reponse.json();
+        const valeurPieces = JSON.stringify(pieces);
+        window.localStorage.setItem("work",valeurPieces)
+        pieces = JSON.parse(pieces);
+        innerelement(pieces)
+}
 function DeleteWork(workId) {
     let DeleteResponse = fetch(`http://localhost:5678/api/works/${workId}` ,{ 
         method: 'DELETE',
@@ -156,13 +168,14 @@ let file
 let formData = new FormData();
 image2.addEventListener("change" , (event)=>{
     file = event.target.files[0]
-    formData.append()///////////////////////////////////
+    //formData.append()///////////////////////////////////
     if(file){
         const reader = new FileReader();
 
         reader.onload = function(e) {
             const img = e.target.result;
             preview.innerHTML = `<img src="${img}" alt=""></img>`
+            preview.style.padding = "0px";
         };
 
         reader.readAsDataURL(file);
