@@ -128,7 +128,7 @@ async function refreshgalery(){
         pieces = await reponse.json();
         const valeurPieces = JSON.stringify(pieces);
         window.localStorage.setItem("work",valeurPieces)
-        pieces = JSON.parse(pieces);
+        //pieces = JSON.parse(pieces);
         innerelement(pieces)
 }
 function DeleteWork(workId) {
@@ -145,6 +145,7 @@ let edition = document.querySelector(".projet-edition").addEventListener("click"
     BG_popup.classList.remove("none")
     galeryPhoto()
 })
+
 
 document.querySelector(".addPhoto").addEventListener('click',()=>{
     document.querySelectorAll(".popup").forEach((popup ) =>{
@@ -260,3 +261,26 @@ async function publishwork(formData , token){
         body: formData
     }) 
 }
+let popup1 = document.querySelector(".A-popup")
+let popups = document.querySelectorAll(".popup")
+let Croix = document.querySelectorAll(".fa-xmark")
+Croix.forEach(X_mark => {
+    X_mark.addEventListener("click" , () => {
+        Close_Popup()
+})
+})
+function Close_Popup(){
+    popups.forEach(popup =>{
+        popup.classList.add('none')
+        BG_popup.classList.add("none")
+        popup1.classList.remove("none")
+})
+}
+
+BG_popup.addEventListener("click",Close_Popup)
+
+popups.forEach(popup => {
+    popup.addEventListener("click", (event) => {
+        event.stopPropagation();
+    });
+});

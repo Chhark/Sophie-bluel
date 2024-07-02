@@ -285,6 +285,7 @@ a{
 	margin: 0;
 }
 .popup{
+	position: fixed;
 	padding: 20px;
 	padding-bottom: 50px;
 	background-color: #ffffff;
@@ -295,6 +296,7 @@ a{
 	box-sizing: border-box;
 	border-radius: 10px;
 	row-gap: 20px;
+	z-index: 2;
 }
 
 .popup h3 {
