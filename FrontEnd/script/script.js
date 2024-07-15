@@ -1,17 +1,39 @@
 let change_in  = document.querySelectorAll(".change-in")
 let change_out  = document.querySelectorAll(".change-out")
 let pieces
-
+let workList
+connectedView()
 async function loadCategories(){
     let categoriesResponse = await fetch('http://localhost:5678/api/categories')
     let categories = await categoriesResponse.json();
     const listCategorie = JSON.stringify(categories)
     window.localStorage.setItem("categories",listCategorie)
+    let catég = window.localStorage.getItem("categories")
+    console.log(catég)
+    catég = JSON.parse(catég)
+    catég.forEach((element)=>{
+        RadioCategorie += ` <input type="radio" class="filter" id="${element.id}" name="filter">
+			<label for="${element.id}">${element.name}</label>`
+    })
+    filter_categories.innerHTML = RadioCategorie
+    let filter = document.querySelectorAll(".filter")
+    console.log(filter)
+    filter.forEach(filtre  =>{
+    filtre.addEventListener('change' , ()=>{
+        console.log("click")
+        const selectedCategory = document.querySelector(".filter:checked").id;
+        console.log(selectedCategory)
+        workList = filter_categorie(parseInt(selectedCategory))
+        console.log(workList)
+        innerelement(workList)
+    })
+})
+
 }
 
 loadCategories()
 
-connectedView()
+
 async function affichageprojet() {
     pieces = window.localStorage.getItem("work");
     if (pieces === null) {
@@ -27,17 +49,38 @@ async function affichageprojet() {
     }
       
 } 
-function innerelement(pieces){
-    let galeryy = document.querySelector(".gallery")
+let RadioCategorie = `<input type="radio" class="filter" id="0" name="filter" checked>
+			<label for="0">Tous</label>`
+let filter_categories = document.querySelector(".filter-containeur")
 
-    pieces.forEach((élement) => {
+function innerelement(piece){
+    let galeryy = document.querySelector(".gallery")
+    galeryy.innerHTML = ''
+
+    
+    piece.forEach((élement) => {
         let html = "<figure><img src=\""+élement.imageUrl+"\"alt=\""+élement.title+"\"> <figcaption>"+élement.title+"</figcaption> </figure>";
         console.log(html)
         galeryy.innerHTML += html
     })
 }
 
+function filter_categorie(categoriess){
+    workList = window.localStorage.getItem("work")
+    workList = JSON.parse(workList)
+    console.log(workList)
+    if (categoriess === 0) {
+        return workList
+    }
+    else {
+        return workList.filter(work => work.categoryId === categoriess)
+    }
+}
+
 affichageprojet()
+console.log("testssssssssssssss")
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 function connectedView() {
     let changeInClass = "change-in";
     let changeOutClass = "change-out";
@@ -74,6 +117,7 @@ logout.addEventListener('click', () => {
     localStorage.removeItem("token")
     connectedView()
 })
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 let display_img = document.querySelector(".display-img")
 let BG_popup = document.querySelector(".BG-popup")
@@ -121,14 +165,13 @@ function innerGalery(galery) {
 }
 let bearerToken = window.localStorage.getItem('token')
 bearerToken = JSON.parse(bearerToken)
-bearerToken = bearerToken.token
 console.log(bearerToken)
 async function refreshgalery(){
+    bearerToken = bearerToken.token
     let reponse = await fetch('http://localhost:5678/api/works')
         pieces = await reponse.json();
         const valeurPieces = JSON.stringify(pieces);
         window.localStorage.setItem("work",valeurPieces)
-        //pieces = JSON.parse(pieces);
         innerelement(pieces)
 }
 function DeleteWork(workId) {
@@ -157,7 +200,7 @@ document.querySelector(".addPhoto").addEventListener('click',()=>{
     let caté = window.localStorage.getItem("categories")
     caté = JSON.parse(caté)
     caté.forEach((element)=>{
-        optionCategorie += ` <option value="${element.name}">${element.name}</option>`
+        optionCategorie += ` <option value="${element.id}">${element.name}</option>`
     })
     selectCategories.innerHTML = optionCategorie
     
@@ -169,7 +212,7 @@ let file
 let formData = new FormData();
 image2.addEventListener("change" , (event)=>{
     file = event.target.files[0]
-    //formData.append()///////////////////////////////////
+    formData.append('image', file);
     if(file){
         const reader = new FileReader();
 
@@ -236,9 +279,7 @@ let response
 formm.addEventListener('submit', async (Event)=>{
     Event.preventDefault()
     let titre = document.querySelector('#Titre').value
-    let catégorie = 1 /*document.querySelector('#categorie').value*/
-    //let formData = new FormData();
-    //formData.append('image', file);
+    let catégorie = document.querySelector('#categorie').value
     formData.append('title', titre);
     formData.append('category', catégorie );
     console.log(file)
@@ -247,19 +288,20 @@ formm.addEventListener('submit', async (Event)=>{
     console.log(token)
     token = JSON.parse(token)
     console.log(token)
-    await zpublishwork(formData , token)
+    await publishwork(formData , token)
     console.log("test2")
     console.log(response)
 })
 
 async function publishwork(formData , token){
-    const response = await fetch('http://localhost:5678/api/works',{
+    let response = await fetch('http://localhost:5678/api/works',{
         method: 'POST',
         headers: {
-            'Authorization': 'Bearer ' + token.token // Assurez-vous que le token est correct
+            'Authorization': 'Bearer ' + token.token 
         },
         body: formData
-    }) 
+    })
+    refreshgalery()
 }
 let popup1 = document.querySelector(".A-popup")
 let popups = document.querySelectorAll(".popup")
