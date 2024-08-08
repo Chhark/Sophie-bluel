@@ -198,6 +198,15 @@ footer nav ul{
 	display: none;
 }
 
+.filter-containeur{
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: center;
+	margin-bottom: 30px;
+	gap: 15px;
+}
+
 .filter-containeur label{
 	display: inline-block;
     padding: 10px 20px;
@@ -218,6 +227,9 @@ footer nav ul{
 
 a{
 	text-decoration: none;
+}
+a:visited{
+	color: #000000;
 }
 
 
@@ -340,6 +352,12 @@ a{
 	color: #ffffff;
 }
 
+.nav{
+	width: 100%;
+	display: flex;
+	justify-content: space-between;
+}
+
 .popup .valid{
 	padding: 8px 100px;
 }
@@ -421,6 +439,7 @@ input[type="file"]{
 .btn-disabled {
     background-color: #A7A7A7 !important;
     color: white;
+	border-color:  #A7A7A7 !important;
     cursor: not-allowed;
 }
 .btn-enabled {

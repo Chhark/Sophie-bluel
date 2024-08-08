@@ -1,3 +1,12 @@
+function form(){
+    document.querySelectorAll("form").forEach(form =>{
+        form.addEventListener('submit',(event)=>{
+            event.preventDefault()
+        })
+        
+    })
+}
+form()
 let change_in  = document.querySelectorAll(".change-in")
 let change_out  = document.querySelectorAll(".change-out")
 let pieces
@@ -151,13 +160,21 @@ function innerGalery(galery) {
     })
     display_img.innerHTML = Display_img
     document.querySelectorAll(".fa-trash-can").forEach(trashicon => {
-        trashicon.addEventListener("click",async function() {
+        trashicon.addEventListener("click",async function(event) {
+            event.preventDefault(); 
+            event.stopPropagation();
             let idd = this.getAttribute('data-id');
             console.log(pieces)
             idd = pieces[idd].id
             console.log(idd)
-            await DeleteWork(idd)
-            refreshgalery()
+            await DeleteWork(idd , event)
+            await refreshgalery()
+            let Newgalery = window.localStorage.getItem("work")
+            Newgalery = JSON.parse(Newgalery)
+            innerGalery(Newgalery)
+              
+            
+
             
         })
     })
@@ -166,6 +183,8 @@ function innerGalery(galery) {
 let bearerToken = window.localStorage.getItem('token')
 bearerToken = JSON.parse(bearerToken)
 console.log(bearerToken)
+
+
 async function refreshgalery(){
     bearerToken = bearerToken.token
     let reponse = await fetch('http://localhost:5678/api/works')
@@ -174,27 +193,35 @@ async function refreshgalery(){
         window.localStorage.setItem("work",valeurPieces)
         innerelement(pieces)
 }
-function DeleteWork(workId) {
-    let DeleteResponse = fetch(`http://localhost:5678/api/works/${workId}` ,{ 
+async function DeleteWork(workId , event ) { 
+    event.preventDefault();   
+    bearerToken = bearerToken.token
+    let DeleteResponse = await fetch(`http://localhost:5678/api/works/${workId}` ,{ 
         method: 'DELETE',
         headers: {
             'Authorization': `Bearer ${bearerToken}`,
             'Content-Type': 'application/json'
         }
     })
+    console.log(DeleteResponse)
+    
 }
 
 let edition = document.querySelector(".projet-edition").addEventListener("click" , () => {
     BG_popup.classList.remove("none")
     galeryPhoto()
 })
-
-
-document.querySelector(".addPhoto").addEventListener('click',()=>{
+function togglePopup(){
     document.querySelectorAll(".popup").forEach((popup ) =>{
         popup.classList.toggle('none')
-                
+       
+
     })
+}
+document.querySelector(".fa-arrow-left").addEventListener('click', togglePopup)
+
+document.querySelector(".addPhoto").addEventListener('click',()=>{
+    togglePopup()
     let optionCategorie = ""
     let selectCategories = document.getElementById("categorie")
     let caté = window.localStorage.getItem("categories")
@@ -203,6 +230,7 @@ document.querySelector(".addPhoto").addEventListener('click',()=>{
         optionCategorie += ` <option value="${element.id}">${element.name}</option>`
     })
     selectCategories.innerHTML = optionCategorie
+    form()
     
 })
 let preview = document.querySelector(".ajout-photo")
@@ -228,24 +256,7 @@ image2.addEventListener("change" , (event)=>{
 }
 })
  
-/*let token = window.localStorage.getItem('token')
-token = JSON.parse(token)
-document.getElementById('imageUpload').addEventListener('change',async function(event) {
-    event.preventDefault();
-    const file = event.target.files[0]; // Récupère le fichier
-    if (!file) {
-        console.log("Aucun fichier sélectionné.");
-        return;
-    }
 
-    const formData = new FormData();
-    formData.append('image', file); // Ajoute l'image
-
-    await AddAPIWork(formData)
-    
-
-
-}) */
 let formm = document.getElementById('addWork')
 let submitButton = document.querySelector(".valid")
 let RequiredInput = formm.querySelectorAll("input , select")
@@ -302,6 +313,7 @@ async function publishwork(formData , token){
         body: formData
     })
     refreshgalery()
+    console.log(response)
 }
 let popup1 = document.querySelector(".A-popup")
 let popups = document.querySelectorAll(".popup")
