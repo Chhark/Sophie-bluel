@@ -1,3 +1,8 @@
+let change_in  = document.querySelectorAll(".change-in")
+let change_out  = document.querySelectorAll(".change-out")
+let pieces
+let workList
+
 function form(){
     document.querySelectorAll("form").forEach(form =>{
         form.addEventListener('submit',(event)=>{
@@ -6,12 +11,7 @@ function form(){
         
     })
 }
-form()
-let change_in  = document.querySelectorAll(".change-in")
-let change_out  = document.querySelectorAll(".change-out")
-let pieces
-let workList
-connectedView()
+////////////////////////////affichage galerie///////////////////////////
 async function loadCategories(){
     let categoriesResponse = await fetch('http://localhost:5678/api/categories')
     let categories = await categoriesResponse.json();
@@ -40,7 +40,8 @@ async function loadCategories(){
 
 }
 
-loadCategories()
+
+
 
 
 async function affichageprojet() {
@@ -65,13 +66,14 @@ let filter_categories = document.querySelector(".filter-containeur")
 function innerelement(piece){
     let galeryy = document.querySelector(".gallery")
     galeryy.innerHTML = ''
-
+    let galerieHtml = ''
     
     piece.forEach((élement) => {
         let html = "<figure><img src=\""+élement.imageUrl+"\"alt=\""+élement.title+"\"> <figcaption>"+élement.title+"</figcaption> </figure>";
         console.log(html)
-        galeryy.innerHTML += html
+        galerieHtml += html
     })
+    galeryy.innerHTML = galerieHtml
 }
 
 function filter_categorie(categoriess){
@@ -86,16 +88,16 @@ function filter_categorie(categoriess){
     }
 }
 
+form()
+connectedView()
+loadCategories()
 affichageprojet()
-console.log("testssssssssssssss")
-
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////connection////////////////////////////////////////////////////////////////////////////
 function connectedView() {
     let changeInClass = "change-in";
     let changeOutClass = "change-out";
-    let connecttoken = window.localStorage.getItem("token")
-    console.log(connecttoken)
-    if (connecttoken != null) {
+    let ConnectToken = window.localStorage.getItem("token")
+    if (ConnectToken != null) {
         console.log("vous êtes connecté")
         change_out.forEach(element => {
             element.classList.add(changeInClass);
@@ -126,7 +128,7 @@ logout.addEventListener('click', () => {
     localStorage.removeItem("token")
     connectedView()
 })
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////popup/////////////////////////////////////////////////////////////////////////////////////
 
 let display_img = document.querySelector(".display-img")
 let BG_popup = document.querySelector(".BG-popup")
@@ -193,6 +195,9 @@ async function refreshgalery(){
         window.localStorage.setItem("work",valeurPieces)
         innerelement(pieces)
 }
+
+
+///////////////////////////////////////////suprimer traveaux//////////////////////////////////////////////////////////////////////////////////
 async function DeleteWork(workId , event ) { 
     event.preventDefault();   
     bearerToken = bearerToken.token
@@ -206,20 +211,7 @@ async function DeleteWork(workId , event ) {
     console.log(DeleteResponse)
     
 }
-
-let edition = document.querySelector(".projet-edition").addEventListener("click" , () => {
-    BG_popup.classList.remove("none")
-    galeryPhoto()
-})
-function togglePopup(){
-    document.querySelectorAll(".popup").forEach((popup ) =>{
-        popup.classList.toggle('none')
-       
-
-    })
-}
-document.querySelector(".fa-arrow-left").addEventListener('click', togglePopup)
-
+////////////////////////////////////ajout traveaux//////////////////////////////////////////////////////////////////
 document.querySelector(".addPhoto").addEventListener('click',()=>{
     togglePopup()
     let optionCategorie = ""
@@ -315,6 +307,23 @@ async function publishwork(formData , token){
     refreshgalery()
     console.log(response)
 }
+
+
+/////////////////////////////////////close popup////////////////////////////////////////////////////////////////////////////////////////
+
+let edition = document.querySelector(".projet-edition").addEventListener("click" , () => {
+    BG_popup.classList.remove("none")
+    galeryPhoto()
+})
+function togglePopup(){
+    document.querySelectorAll(".popup").forEach((popup ) =>{
+        popup.classList.toggle('none')
+       
+
+    })
+}
+document.querySelector(".fa-arrow-left").addEventListener('click', togglePopup)
+
 let popup1 = document.querySelector(".A-popup")
 let popups = document.querySelectorAll(".popup")
 let Croix = document.querySelectorAll(".fa-xmark")
